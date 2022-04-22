@@ -1,0 +1,19 @@
+module msg {
+
+	typedef octet ImgData[40000];
+	
+	#pragma DCPS_DATA_TYPE "msg::Message"
+	#pragma DCPS_DATA_KEY "msg::Message subject_id"
+
+	struct Message {
+		//string from;
+		string subject;
+		long subject_id;
+		long time_num;
+		long pre_time;
+		string text;
+		long count;
+		ImgData img;
+  };
+};
+
