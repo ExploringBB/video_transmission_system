@@ -59,6 +59,7 @@ int main(int argc, char *argv[]) {
 		if (!pub) {
 			std::cerr << "creat_publisher error ,in code line 41" << std::endl;
 			//return 1;
+			//
 		}
 /*==========================UI_PORCESS==============================================*/
 		_beginthread(time_show, 0, NULL);
