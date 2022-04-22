@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
 		_beginthread(time_show, 0, NULL);
 		_beginthread(Capture_show, 0, NULL);
 		_beginthread(gui_pub, 0, NULL);
-		//
+		
 /*==========================UI_PORCESS==============================================*/
 		DDS::DataWriterQos Dr;
 		pub->get_default_datawriter_qos(Dr);
