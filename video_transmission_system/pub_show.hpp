@@ -20,7 +20,7 @@ struct ret_p {
 	int video_quality=3;
 	bool confirm = false,send=false,close_time=false;
 	string Pub_text = "";
-	bool qos_conf = false;//
+	bool qos_conf = false;
 };
 struct ret_p p_return;
 double val = 3;

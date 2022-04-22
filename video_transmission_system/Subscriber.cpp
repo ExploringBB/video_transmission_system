@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	//注册数据类型 并 创建主题
+	//注册数据类型并创建主题
 	msg::MessageTypeSupport_var mts = new msg::MessageTypeSupportImpl();
 	if (DDS::RETCODE_OK != mts->register_type(participant, "")) {
 		std::cerr << "regist error" << std::endl;

@@ -58,7 +58,6 @@ void gui_sub(void *st)
 {
 	cv::Mat frame = cv::Mat(cv::Size(500, 300-80), CV_8UC3);
 	cvui::init(WINDOW_SUB, 1);
-
 	while (true)
 	{
 		frame = cv::Scalar(223, 223, 223);	//background :RGB
