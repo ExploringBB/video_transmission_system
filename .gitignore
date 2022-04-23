@@ -185,6 +185,7 @@ _pkginfo.txt
 
 # Others
 *.lib
+*.exe
 *.avi
 ClientBin/
 ~$*

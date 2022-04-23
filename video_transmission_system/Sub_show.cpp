@@ -61,7 +61,7 @@ void gui_sub(void *st)
 	while (true)
 	{
 		frame = cv::Scalar(223, 223, 223);	//background :RGB
-		//Qos
+		//Qos  
 		cvui::text(frame, 10, 10, "Reliablity Qos:", 1.2* cvui::DEFAULT_FONT_SCALE, 0x0f0f0f);
 		if (Reader_Reliable && Reader_Qos_conf)
 			cvui::text(frame, 130, 10, "Reliable", 1.2* cvui::DEFAULT_FONT_SCALE, 0x0f0f0f);
