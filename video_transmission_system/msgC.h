@@ -25,8 +25,8 @@
 // TAO_IDL - Generated from
 // c:\ace_wrappers\tao\tao_idl\be\be_codegen.cpp:149
 
-#ifndef _TAO_IDL_MSGC_XNJF1B_H_
-#define _TAO_IDL_MSGC_XNJF1B_H_
+#ifndef _TAO_IDL_MSGC_GRQ6OD_H_
+#define _TAO_IDL_MSGC_GRQ6OD_H_
 
 #include /**/ "ace/pre.h"
 

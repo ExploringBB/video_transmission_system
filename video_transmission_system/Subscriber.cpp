@@ -26,6 +26,7 @@ extern int s_bre;
 extern bool Reader_Reliable , Reader_Best , Reader_Qos_conf ;
 int main(int argc, char *argv[]) {
 	cout << "Publisher" << endl;
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
 	DDS::DomainParticipantFactory_var dpf = TheParticipantFactoryWithArgs(argc, argv);
 	DDS::DomainParticipant_var participant = dpf->create_participant(42, PARTICIPANT_QOS_DEFAULT, 0, OpenDDS::DCPS::DEFAULT_STATUS_MASK);
 	if (!participant) {
@@ -75,7 +76,12 @@ int main(int argc, char *argv[]) {
 
 	DDS::DataReaderQos Dr;
 	sub->get_default_datareader_qos(Dr);
-	while (Reader_Qos_conf == false);
+	while (Reader_Qos_conf == false) {
+		if (s_bre)
+			break;
+	}
+	if(!s_bre)
+	{ 
 	if (Reader_Reliable)
 	{
 		Dr.reliability.kind = DDS::RELIABLE_RELIABILITY_QOS;	//¿É¿¿
@@ -123,7 +129,7 @@ int main(int argc, char *argv[]) {
 			break;
 		}
 	}ws->detach_condition(condition);
-
+	}
 	//crear all
 	participant->delete_contained_entities();
 	dpf->delete_participant(participant);

@@ -26,8 +26,8 @@
 // TAO_IDL - Generated from
 // c:\ace_wrappers\tao\tao_idl\be\be_codegen.cpp:635
 
-#ifndef _TAO_IDL_MSGS_FD6DBJ_CPP_
-#define _TAO_IDL_MSGS_FD6DBJ_CPP_
+#ifndef _TAO_IDL_MSGS_WAYPX5_CPP_
+#define _TAO_IDL_MSGS_WAYPX5_CPP_
 
 
 #include "msgS.h"

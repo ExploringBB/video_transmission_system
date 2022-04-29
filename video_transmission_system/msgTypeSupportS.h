@@ -25,8 +25,8 @@
 // TAO_IDL - Generated from
 // c:\ace_wrappers\tao\tao_idl\be\be_codegen.cpp:451
 
-#ifndef _TAO_IDL_MSGTYPESUPPORTS_LLNAUM_H_
-#define _TAO_IDL_MSGTYPESUPPORTS_LLNAUM_H_
+#ifndef _TAO_IDL_MSGTYPESUPPORTS_PLDNTV_H_
+#define _TAO_IDL_MSGTYPESUPPORTS_PLDNTV_H_
 
 #include /**/ "ace/pre.h"
 

@@ -34,8 +34,9 @@ x264_param_t param;
 int Options();
 
 int main(int argc, char *argv[]) {
-	try {		
+	try {
 		cout << "Publisher" << endl;
+		ShowWindow(GetConsoleWindow(), SW_HIDE);
 		DDS::DomainParticipantFactory_var dpf = TheParticipantFactoryWithArgs(argc, argv);
 		DDS::DomainParticipant_var participant = dpf->create_participant(42, PARTICIPANT_QOS_DEFAULT, 0, OpenDDS::DCPS::DEFAULT_STATUS_MASK);
 		if (!participant) {
@@ -61,21 +62,28 @@ int main(int argc, char *argv[]) {
 			//return 1;
 			//
 		}
-/*==========================UI_PORCESS==============================================*/
+		/*==========================UI_PORCESS==============================================*/
 		_beginthread(time_show, 0, NULL);
 		_beginthread(Capture_show, 0, NULL);
 		_beginthread(gui_pub, 0, NULL);
-		
-/*==========================UI_PORCESS==============================================*/
+
+		/*==========================UI_PORCESS==============================================*/
 		DDS::DataWriterQos Dr;
 		pub->get_default_datawriter_qos(Dr);
 		p_return.Pub_text = "Wait for Choosing Qos...";
-		while (p_return.qos_conf == false);
+
+		while (p_return.qos_conf == false)
+		{
+			if (p_return.bre)
+				break;
+		}
+		if(!p_return.bre)
+		{
 		if (Writer_Reliable)
 		{
 			Dr.reliability.kind = DDS::RELIABLE_RELIABILITY_QOS;	//可靠
 		}
-		else if(Writer_Best)
+		else if (Writer_Best)
 		{
 			Dr.reliability.kind = DDS::BEST_EFFORT_RELIABILITY_QOS;//最大努力
 		}
@@ -93,7 +101,7 @@ int main(int argc, char *argv[]) {
 		if (!writer) {
 			std::cerr << "creat_data_writer error ,in code line 41" << std::endl;
 			//return 1;
-		} 
+		}
 		//将数据写入器引用的范围缩小到messageDataWriter对象引用，以便我们可以使用特定的类型的发布操作。
 		msg::MessageDataWriter_var message_writer = msg::MessageDataWriter::_narrow(writer);
 		p_return.Pub_text = "Waiting Subscriber...";
@@ -101,8 +109,8 @@ int main(int argc, char *argv[]) {
 		conditon->set_enabled_statuses(DDS::PUBLICATION_MATCHED_STATUS);
 		DDS::WaitSetInterf_var ws = new DDS::WaitSet;
 		ws->attach_condition(conditon);
-		p_return.Pub_text= "Waiting Subscriber...1";
-		while (true) 
+		p_return.Pub_text = "Waiting Subscriber...1";
+		while (true)
 		{
 			DDS::PublicationMatchedStatus matches;
 			if (writer->get_publication_matched_status(matches) != DDS::RETCODE_OK) {
@@ -134,10 +142,10 @@ int main(int argc, char *argv[]) {
 		int length = 0;
 		string content = "";
 		int width = 640, height = 480;
-		int yuv_bufLen = width * height * 3 / 2;		
-		x264_t *encoder;
+		int yuv_bufLen = width * height * 3 / 2;
+		x264_t* encoder;
 		x264_picture_t pic_in, pic_out;
-		
+
 		x264_param_default_preset(&param, "veryfast", "zerolatency");
 		param.i_threads = 1;
 		param.i_width = width;
@@ -157,14 +165,14 @@ int main(int argc, char *argv[]) {
 		param.b_sliced_threads = 0;
 		x264_param_apply_profile(&param, "baseline");
 		x264_picture_alloc(&pic_in, X264_CSP_I420, width, height);
-		
-		
+
+
 		//unsigned char* pYuvBuf = new unsigned char[yuv_bufLen];//malloc
-		unsigned char *pYuvBuf = (unsigned char *)malloc(yuv_bufLen+1);
-		unsigned char *buf = (unsigned char *)malloc(35000);
+		unsigned char* pYuvBuf = (unsigned char*)malloc(yuv_bufLen + 1);
+		unsigned char* buf = (unsigned char*)malloc(35000);
 		Mat yuv_mat;
 		while (1)
-		{	
+		{
 			encoder = x264_encoder_open(&param);
 			cvtColor(frame_capture, yuv_mat, CV_BGR2YUV_I420);
 			memcpy(pYuvBuf, yuv_mat.data, yuv_bufLen);
@@ -172,10 +180,10 @@ int main(int argc, char *argv[]) {
 			pic_in.img.plane[0] = pYuvBuf;
 			pic_in.img.plane[1] = pic_in.img.plane[0] + width * height;
 			pic_in.img.plane[2] = pic_in.img.plane[1] + width * height / 4;
-			
+
 			int64_t i_pts = 0;
-			x264_nal_t *nals = NULL;
-			x264_nal_t *nal;
+			x264_nal_t* nals = NULL;
+			x264_nal_t* nal;
 			int nnal;
 			pic_in.i_pts = i_pts++;
 			x264_encoder_encode(encoder, &nals, &nnal, &pic_in, &pic_out);
@@ -187,7 +195,7 @@ int main(int argc, char *argv[]) {
 			}
 			//----------------------------------------------------------------------
 			TheMessage.count = i;
-			memcpy(TheMessage.img, buf, 35000);						
+			memcpy(TheMessage.img, buf, 35000);
 			if (p_return.send)
 			{
 				TheMessage.subject = CORBA::string_dup(p_return.str.data());//string
@@ -206,11 +214,13 @@ int main(int argc, char *argv[]) {
 		}
 		free(buf);
 		free(pYuvBuf);
-/*=========================================================================================*/
-
-		participant->delete_contained_entities();
-		dpf->delete_participant(participant);
-
+		/*=========================================================================================*/
+	}
+		else
+		{
+			participant->delete_contained_entities();
+			dpf->delete_participant(participant);
+		}
 		TheServiceParticipant->shutdown();
 	}
 	catch (const CORBA::Exception& e) {

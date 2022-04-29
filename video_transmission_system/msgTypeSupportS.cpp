@@ -26,8 +26,8 @@
 // TAO_IDL - Generated from
 // c:\ace_wrappers\tao\tao_idl\be\be_codegen.cpp:635
 
-#ifndef _TAO_IDL_MSGTYPESUPPORTS_LLNAUM_CPP_
-#define _TAO_IDL_MSGTYPESUPPORTS_LLNAUM_CPP_
+#ifndef _TAO_IDL_MSGTYPESUPPORTS_SYYPZX_CPP_
+#define _TAO_IDL_MSGTYPESUPPORTS_SYYPZX_CPP_
 
 
 #include "msgTypeSupportS.h"
