@@ -159,24 +159,22 @@ int main(int argc, char *argv[]) {
 		param.i_level_idc = 30;//编码复杂度 
 		param.rc.f_rf_constant = 25; //图像质量 
 		param.rc.f_rf_constant_max = 50; //图像质量 
-		param.i_keyint_max = 10;
-		param.i_bframe_adaptive = X264_B_ADAPT_TRELLIS;
-		param.i_threads = 1;
-		param.b_sliced_threads = 0;
+		//param.i_keyint_max = 10;
+		//param.i_bframe_adaptive = X264_B_ADAPT_TRELLIS;
+		//param.i_threads = 1;
+		//param.b_sliced_threads = 0;
 		x264_param_apply_profile(&param, "baseline");
 		x264_picture_alloc(&pic_in, X264_CSP_I420, width, height);
 
-
-		//unsigned char* pYuvBuf = new unsigned char[yuv_bufLen];//malloc
-		unsigned char* pYuvBuf = (unsigned char*)malloc(yuv_bufLen + 1);
+		unsigned char* pYuvBuf = (unsigned char*)malloc(yuv_bufLen);
 		unsigned char* buf = (unsigned char*)malloc(35000);
 		Mat yuv_mat;
 		while (1)
 		{
 			encoder = x264_encoder_open(&param);
 			cvtColor(frame_capture, yuv_mat, CV_BGR2YUV_I420);
-			memcpy(pYuvBuf, yuv_mat.data, yuv_bufLen);
-
+			pYuvBuf = yuv_mat.data;
+			//memcpy(pYuvBuf, yuv_mat.data, yuv_bufLen);
 			pic_in.img.plane[0] = pYuvBuf;
 			pic_in.img.plane[1] = pic_in.img.plane[0] + width * height;
 			pic_in.img.plane[2] = pic_in.img.plane[1] + width * height / 4;
@@ -213,9 +211,10 @@ int main(int argc, char *argv[]) {
 			Options();
 		}
 		free(buf);
-		free(pYuvBuf);
+		//free(pYuvBuf);	//memcpy改为指针指向之后，不需要重复free
 		/*=========================================================================================*/
 	}
+	
 		else
 		{
 			participant->delete_contained_entities();

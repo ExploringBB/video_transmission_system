@@ -43,7 +43,6 @@ int video_decode(unsigned char *videoData, int len)
 	AVPacket *packet = new AVPacket;
 	av_new_packet(packet, len);
 	packet->data = videoData;
-
 	ret = avcodec_decode_video2(pCodecCtx, pAvFrame, &got_picture, packet);
 	if (ret < 0)
 	{
